@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<style>
+/* Full-width input fields */
+input[type=text], input[type=password] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+    padding: 14px 20px;
+    background-color: #f44336;
+}
+
+/* Float cancel and signup buttons and add an equal width */
+.cancelbtn,.signupbtn {float:left;width:50%}
+
+/* Add padding to container elements */
+.container {
+    padding: 16px;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button (x) */
+.close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    color: #000;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: red;
+    cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 300px) {
+    .cancelbtn, .signupbtn {
+       width: 100%;
+    }
+}
+</style>
+<body>
+<div align="center" style="margin: 100px 100px 100px 100px">
+<h2>Modal Signup Form</h2>
+
+
+<button onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Sign Up</button>
+
+
+
+    <br>First Name:
+    <input type="text" id="txtName">
+    <!-- calling the function "addName"  -->
+    <br> Last Name:
+    <input type="text" id="txtName1">
+
+    <br> Password:
+    <input type="text" id="txtName2">
+    <!-- calling the function "addName"  -->
+<br>
+<br>
+
+    <button onclick="forloop2()">display</button>
+
+
+
+
+<table border="1">
+        <thead>
+            <tr>
+                <th>FIRST NAME</th>
+                <th>LAST NAME</th>
+                <th>IMAGE</th>
+            </tr>
+        </thead>
+        <tbody id="tblNames">
+
+        </tbody>
+    </table>
+</div>
+
+
+
+    <div id="id01" class="modal" style="margin: auto;">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+  <h1 align="center" style="background-color: white; margin: auto; padding: 100px 100px 100px"> WELCOME</h1>
+</div>
+
+<script>
+        // Get the modal
+        var modal = document.getElementById('id01');
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+
+
+
+        let user = [{
+                fname: "Chris",
+                lname: "Calamba",
+                pass1: "calamba",
+                img: "https://customers.accrisoft.com/clientuploads/authorship_profile.jpg"
+            
+            }];
+        let names = ['Clyde','Chester'];
+
+
+
+    function    forloop2(){
+        let fname = document.querySelector('#txtName').value;
+        let lname = document.querySelector('#txtName1').value;
+        let pass1 = document.querySelector('#txtName2').value;
+        let newName = {
+            fname: fname,
+            lname: lname,
+            pass1: pass1,
+            img: "https://customers.accrisoft.com/clientuploads/authorship_profile.jpg"
+        };
+        user.push(newName);
+        console.log(user);
+        localStorage.setItem('user',user);
+
+        let lsNames= localStorage.getItem('user')
+        console.log(lsNames);
+        console.log(user)
+
+
+        
+        let jns = JSON.stringify(user); //API method converting from JSON- to String
+        localStorage.setItem('user',jns);
+        let jns_retreive = JSON.parse(localStorage.getItem('user'));
+        console.log(jns_retreive);
+        console.log("Name is " + jns_retreive[0].fname);
+        console.log("Last name is " + jns_retreive[0].lname);
+        console.log("pass1 " + jns_retreive[0].pass1);
+/*      let html = `
+            <tr>
+                <td>${jns_retreive[0].name}</td>
+                <td>${jns_retreive[0].gender}</td>
+            </tr>
+            <tr>
+                <td>${jns_retreive[1].name}</td>
+                <td>${jns_retreive[1].gender}</td>
+            </tr>
+        `;
+*/  
+        let html = ``;
+        jns_retreive.map((name)=>{
+            html += `
+            <tr>
+
+                <td>${name.fname}</td>
+                <td>${name.lname}</td>
+                <td> <img src="${name.img}" /> </td>
+
+            </tr>
+            `;
+            
+        });
+        /*for(let i=0;i<jns_retreive.length;i++){
+            console.log(jns_retreive[i].name);
+            console.log(jns_retreive[i].gender);
+            console.log("**********")
+        }*/
+        document.querySelector('#tblNames').innerHTML = html;
+    }
+
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+
+
+</html>
